@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>聊天室</title>
+</head>
+<body>
+    <!-- 登录区域 -->
+    用户名：<input type="text" class="name"> <button class="join">进入聊天室</button>
+
+    <!-- 聊天信息 -->
+    <div id="con"></div>
+
+    <!-- 发送信息 -->
+    <input type="text" class="send-con">
+    <button class="send">发送</button>
+    <button class="logout">退出聊天室</button>
+
+    <!-- 在线人数提示 -->
+    <div class="num"></div>
+    <div class="userlist"></div>
+
+
+    <script src="https://cdn.bootcss.com/jquery/2.1.0-beta3/jquery.min.js"></script>
+    <!--引入的原因：当这个服务不能用时使用ajax轮查询继续通信-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.slim.js"></script>
+    <!-- <script src="./js/onchat.js"></script> -->
+    <script>
+        $(function() {
+
+            io.connect('/');
+            const socket = io.connect('/'), //开始连接 将连接保存起来
+                  $joinBtn = $('.join'),
+                  $conWrap = $('#con');
+
+            let name,
+                userId = -1;
+
+            // 点击登录
+            $joinBtn.on('click', function() {
+                name = $('.name').val();
+                let nowId = userId++
+                nowId.toString();
+                socket.emit('login', {name: name, userId: nowId});
+            });
+            socket.on('login', function ({ data }) {
+                $conWrap.append( `${data.name}加入聊天室<br>` );
+                console.log('FrontEnd websocket on login');
+            });
+
+            // 发送信息
+            $('.send').on('click', function() {
+                let txt = $('.send-con').val();
+                socket.emit('msg', {content: txt});
+            });
+            socket.on('chat', function (data) {
+                $conWrap.append( `${data.content}<br>` );
+                console.log('FrontEnd websocket on chat');
+            });
+
+            // 点击退出
+            $('.logout').on('click', function() {
+                socket.emit('logout', {userName: name});
+            });
+            socket.on('logout', ({ msg }) => {
+                $conWrap.append( `${msg}退出聊天室<br>` );
+            });
+        });
+    </script>
+</body>
+</html>

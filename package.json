@@ -1,0 +1,16 @@
+{
+  "name": "onlinechat",
+  "version": "1.0.0",
+  "description": "基于WebSocket的在线实时聊天",
+  "main": "index.js",
+  "author": "Jesonhu",
+  "license": "ISC",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.15.4",
+    "socket.io": "latest"
+  }
+}
