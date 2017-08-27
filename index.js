@@ -2,7 +2,7 @@
 var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
-var io = require('../..')(server);
+var io = require('socket.io')(server);
 var port = process.env.PORT || 3000;
 
 server.listen(port, function () {
@@ -48,9 +48,15 @@ io.on('connection', function (socket) {
 
   // when the client emits 'typing', we broadcast it to others
   socket.on('typing', function () {
-    socket.broadcast.emit('typing', {
+    // 自己发给服务器，服务器返回的消息自己看不到
+    socket.broadcast.emit() 
+    socket.broadcast.emit('typing', { 
       username: socket.username
     });
+    // 这样使用服务器返回的消息只有自己看的到
+    // socket.emit('typing', { 
+    //   username: socket.username
+    // });
   });
 
   // when the client emits 'stop typing', we broadcast it to others
