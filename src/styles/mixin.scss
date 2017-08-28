@@ -1,0 +1,10 @@
+// them color
+$themColor: #D59E1F;
+$txtColor: #fff;
+
+$browser-default-font-size: 50px;
+
+@function pxTorem($px) {
+    @return $px / $browser-default-font-size * 1rem;
+}
+
