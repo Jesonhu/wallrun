@@ -1,10 +1,36 @@
 // them color
-$themColor: #D59E1F;
+$themColor: #FFA340;
 $txtColor: #fff;
 
 $browser-default-font-size: 50px;
 
+
+// mixin
+@mixin bgImg100($bgImgUrl) {
+    // background-image:url($bgImgUrl);
+    background-repeat:no-repeat;
+    background-size:100% 100%;
+}
+
+// function
 @function pxTorem($px) {
     @return $px / $browser-default-font-size * 1rem;
+}
+
+
+// css
+.triangleLeft{
+    width:0;
+    height:0;
+    border-width:10px 10px 10px 0;
+    border-style:solid;
+    border-color:transparent $themColor transparent transparent;
+}
+.triangleRight{
+    width:0;
+    height:0;
+    border-width:10px 0px 10px 10px;
+    border-style:solid;
+    border-color:transparent transparent transparent $themColor;
 }
 

@@ -22,43 +22,28 @@
         list: [
           {
             icon: 'fa-home',
-            link: '/',
-            name: '首页'
+            link: '/signin',
+            name: '签到'
           },
           {
             icon: 'fa-home',
-            link: '/lpshow',
-            name: '楼盘鉴赏'
+            link: '/message',
+            name: '消息上墙'
           },
           {
             icon: 'fa-home',
-            link: '/hxtype',
-            name: '户型图展示'
+            link: '/lottery',
+            name: '抽奖'
           },
           {
             icon: 'fa-home',
-            link: '/fullview',
-            name: '全景看房'
+            link: '/vote',
+            name: '投票'
           },
           {
             icon: 'fa-home',
-            link: '/map',
-            name: '项目地址'
-          },
-          {
-            icon: 'fa-home',
-            link: '/about',
-            name: '公司简介'
-          },
-          {
-            icon: 'fa-home',
-            link: '/active',
-            name: '最新资讯'
-          },
-          {
-            icon: 'fa-home',
-            link: '/order',
-            name: '预约看房'
+            link: '/account',
+            name: '个人中心'
           }
         ]
       }
@@ -67,11 +52,15 @@
 </script>
 
 <style scoped lang="scss">
-  $itemHei: 45px;
+  @import '../../styles/mixin';
+
+  $itemHei: pxTorem(58px);
   $color: #fff;
   $activeBg:#424242;
   $activeLineBg: #c53c43;
   .slide-menu{
+    z-index:2;
+    position:relative;
     .item{
       height:$itemHei;
       width:100%;
@@ -110,6 +99,7 @@
           color:$color;
           flex:1;
           text-indent: 10px;
+          font-size:16px;
         }
       }
     }

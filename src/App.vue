@@ -12,5 +12,7 @@ export default {
 
 <style lang="scss">
   @import './styles/reset';
-
+  #app {
+    position:relative;
+  }
 </style>

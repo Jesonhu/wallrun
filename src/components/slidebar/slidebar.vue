@@ -2,19 +2,12 @@
   <div class="sidebar" :class="{active:isActive}">
     <div class="bg-wrap" @click="active"></div>
     <div class="con-wrap">
+      <div class="bg-wrap"></div>
       <div class="avatar-wrap">
-        <a href="" class="link">
-          <img alt="" class="img"
-           src="https://kzcdn.itc.cn/res/passport/images/default_headimg.png">
-        </a>
-        <div class="user-info-wrap" v-if="isLogin">
-          <p class="user-name"><i class="fa fa-user-o"></i><span>{{userName}}</span></p>
-          <p class="last-login"><i class="fa fa-calendar-minus-o"></i><span>2017-6-6</span></p>
-        </div>
       </div>
 
       <slide-menu></slide-menu>
-      <div class="user-status">
+      <div class="user-status" v-if="false">
         <div class="login" v-if="isLogin" @click="userHandle">注销</div>
         <div class="no-login" v-if="!isLogin">
           <router-link to="/login" class="link">请登录</router-link>
@@ -64,6 +57,8 @@
 </script>
 
 <style lang="scss" scoped>
+  @import '../../styles/mixin';
+
   .sidebar{
     z-index: 999;
     display:flex;
@@ -90,12 +85,23 @@
     left:0;
     height:100%;
     width: 220px;
-    background-color:#4d4d4d;
+    background-image:url('../../assets/mobile_bg1.jpg');
+    background-repeat:no-repeat;
+    background-size:cover;
     transform:translateX(-220px);
     transition:.2s transform linear;
+    .bg-wrap{
+      z-index:1;
+      position:absolute;
+      top:0;
+      left:0;
+      height:100%;
+      width:100%;
+      background-color:rgba(0,0,0,.6);
+    }
     .avatar-wrap{
-      height:125px;
-      border-bottom:1px solid #424242;
+      height:pxTorem(72px);
+      border-bottom:1px solid transparent;
       display:flex;
       justify-content: center;
       align-items: center;

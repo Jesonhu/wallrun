@@ -53,13 +53,13 @@ html,body{
 }
 
 
-.clear:after{
+.clearfix:after{
     content: '';
     display: block;
     clear: both;
 }
 
-.clear{
+.clearfix{
     zoom:1;
 }
 
