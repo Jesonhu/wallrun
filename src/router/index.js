@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import hello from 'src/page/hello/hello'
+import helloHor from 'src/page/hello/hello_hor'
+import helloVer from 'src/page/hello/hello_ver'
 import signIn from 'src/page/signin/signin'
+import formSignIn from 'src/page/signin/formSignin'
 import message from 'src/page/message/message'
 import lottery from 'src/page/lottery/lottery'
 import vote from 'src/page/vote/vote'
@@ -13,13 +15,23 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'hello',
-      component: hello
+      name: 'helloHor',
+      component: helloHor
+    },
+    {
+      path: '/hellover',
+      name: 'helloVer',
+      component: helloVer
     },
     {
       path: '/signIn',
       name: 'signIn',
       component: signIn
+    },
+    {
+      path: '/formSignIn',
+      name: 'formSignIn',
+      component: formSignIn
     },
     {
       path: '/message',

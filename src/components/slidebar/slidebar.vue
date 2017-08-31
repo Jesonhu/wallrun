@@ -85,7 +85,7 @@
     left:0;
     height:100%;
     width: 220px;
-    background-image:url('../../assets/mobile_bg1.jpg');
+    background-image:url('../../assets/mobile_bg01.jpg');
     background-repeat:no-repeat;
     background-size:cover;
     transform:translateX(-220px);

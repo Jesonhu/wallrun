@@ -7,7 +7,7 @@
 
         <div class="main-bd">
           <div class="banner" style="background-image:url(http://img4.imgtn.bdimg.com/it/u=3432487329,2901563519&fm=26&gp=0.jpg)"></div>
-          <form action="">
+          <form @submit.prevent="submit">
           <ul class="main-list">
             <li class="main-item">
               <div class="title">你最喜欢哪个节目</div>
@@ -17,7 +17,7 @@
                       <label for="" class="radiolist-label">
                         <span class="radio">
                           <input type="checkbox" name="pn" class="radio-input" value="是">
-                          <span class="radio-core"></span>
+                          <span class="checkbox-core"></span>
                         </span>
                         <span class="radio-label">跑男</span>
                       </label>
@@ -30,7 +30,7 @@
                       <label for="" class="radiolist-label">
                         <span class="radio">
                           <input type="checkbox" name="wsgs" class="radio-input" value="是">
-                          <span class="radio-core"></span>
+                          <span class="checkbox-core"></span>
                         </span>
                         <span class="radio-label">我是歌手</span>
                       </label>
@@ -43,7 +43,7 @@
                       <label for="" class="radiolist-label">
                         <span class="radio">
                           <input type="checkbox" name="bbqn" class="radio-input" value="是">
-                          <span class="radio-core"></span>
+                          <span class="checkbox-core"></span>
                         </span>
                         <span class="radio-label">爸爸去哪</span>
                       </label>
@@ -82,7 +82,8 @@
             </li>
           </ul>
           <div class="submit-wrap">
-            <button class="btn submit">提交</button>
+            <button class="btn submit" 
+             @click="submitClickHandle">提交</button>
           </div>
           </form>
         </div>
@@ -95,6 +96,7 @@
 <script>
   import header from 'components/header/header'
   import sideBar from 'components/slidebar/slidebar'
+  import { Toast, MessageBox } from 'mint-ui'
   
   export default {
     name: 'vote',
@@ -106,6 +108,13 @@
       }
     },
     methods: {
+      // form submit
+      submit() {
+        console.log()
+      },
+      submitClickHandle() {
+        console.log(1)
+      },
       sideBarInit () { // 处理sidebar发来的请求
         this.showSideBar = false
       },
@@ -206,13 +215,46 @@
                       transform: scale(0);
                     }
                   }
-                  .radio-input:checked+.radio-core{
+                  .radio-input:checked+.radio-core,
+                  .radio-input:checked+.checkbox-core{
                       background-color: $themColor;
                       border-color: $themColor;
                   }
-                  .radio-input:checked+.radio-core:after{
+                  .radio-input[type=radio]:checked+.radio-core:after{
                       background-color: #fff;
                       transform: scale(1);
+                  }
+                  .checkbox-core{
+                    display: inline-block;
+                    background-color: #fff;
+                    border-radius: 100%;
+                    border: 1px solid #ccc;
+                    position: relative;
+                    width: 20px;
+                    height: 20px;
+                    vertical-align: middle;
+                    &:after{
+                      border: 2px solid transparent;
+                      border-left: 0;
+                      border-top: 0;
+                      content: " ";
+                      top: 3px;
+                      left: 6px;
+                      position: absolute;
+                      width: 4px;
+                      height: 8px;
+                      -webkit-transform: rotate(45deg) scale(0);
+                      transform: rotate(45deg) scale(0);
+                      -webkit-transition: -webkit-transform .2s;
+                      transition: -webkit-transform .2s;
+                      transition: transform .2s;
+                      transition: transform .2s,-webkit-transform .2s;
+                    }
+                  }
+                  .radio-input:checked+.checkbox-core:after{
+                    border-color: #fff;
+                    -webkit-transform: rotate(45deg) scale(1);
+                    transform: rotate(45deg) scale(1);
                   }
                 }
               }

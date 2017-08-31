@@ -6,32 +6,81 @@
           @parentHeader="parentHeader"></v-header>
 
         <div class="main-bd">
-          <div class="wrap">
+          <div class="wrap" v-show="!showLoading">
             <div class="icon-wrap">
               <i class="iconfont icon-qiandao"></i>
             </div>
-            <div class="status">签到成功!</div>
-            <div class="point">恭喜签到成功,请体验我们的后续活动</div>
+            <div class="status">{{msg}}</div>
+            <div class="point">{{welcome}}</div>
           </div>
         </div>
 
         <!-- slide-bar -->
         <side-bar :show="showSideBar" @parent="sideBarInit"></side-bar>
+
+        <!-- loading -->
+        <loading :show="showLoading"></loading>
     </div>
 </template>
 
 <script>
   import header from 'components/header/header'
   import sideBar from 'components/slidebar/slidebar'
+  import loading from 'components/loading/loading'
+  import axios from 'axios'
   
+  let _this = null
   export default {
     name: 'signIn',
     data() {
       return {
         headerTxt: '签到',
 
-        showSideBar: false
+        showSideBar: false,
+        showLoading: true,
+
+        msg: '',
+        welcome: ''
       }
+    },
+    mounted() {
+      _this = this
+      // setTimeout(function() {
+      //   _this.showLoading = false
+      // }, 1000)
+      // 二维码方式还是表单签到
+      // let action = async function () {
+      //   try {
+      //     let type = axios.post(this.host.signType)
+      //     console.log(type)
+      //   } catch(err) {
+
+      //   }
+      // }
+      // console.log(action)
+      axios.post(this.host.signType)
+      .then((res) => {
+        let actionType = 0
+        if (res.data.code === 1) {
+          actionType = res.data.type
+          
+          if (actionType === 0) { // 已经扫码过了
+            axios.post(this.host.signIn).then((secRes) => {
+              this.msg= secRes.data.msg
+              this.welcome = secRes.data.welcome
+              _this.showLoading = false
+            }).catch((secErr) => {
+              console.log('has code but check signInStatus error')
+            })
+          } else if (actionType === 1) { // 去表单提交签到
+            // console.log('跳到表单签到页面')
+            this.$router.push({path: '/formSignIn'})
+          }
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     },
     methods: {
       sideBarInit () { // 处理sidebar发来的请求
@@ -43,7 +92,8 @@
     },
     components: {
       vHeader: header,
-      sideBar
+      sideBar,
+      loading
     }
   }
 </script>

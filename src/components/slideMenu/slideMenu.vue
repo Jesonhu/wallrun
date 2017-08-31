@@ -30,11 +30,11 @@
             link: '/message',
             name: '消息上墙'
           },
-          {
-            icon: 'fa-home',
-            link: '/lottery',
-            name: '抽奖'
-          },
+          // {
+          //   icon: 'fa-home',
+          //   link: '/lottery',
+          //   name: '抽奖'
+          // },
           {
             icon: 'fa-home',
             link: '/vote',

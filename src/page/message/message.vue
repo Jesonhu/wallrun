@@ -8,7 +8,7 @@
         <!-- 消息内容显示 -->
         <div class="main-bd">
           <ul class="msg-list">
-            <li class="msg-item">
+           <!-- <li class="msg-item">
               <div class="msg-wrap">
                 <div class="msg-avatar" 
                  style="background-image:url('https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2182925329,386985427&fm=117&gp=0.jpg')"></div>
@@ -20,14 +20,16 @@
                   </div>
                 </div>
               </div>
-            </li>
-            <li class="msg-item">
+            </li> -->
+            <li class="msg-item" 
+              v-if="this.list.length > 0 && this.list.content"
+              v-for="(item,key) in this.list">
               <div class="msg-wrap me">
                 <div class="msg-con">
                   <div class="msg-user">Jeson</div>
                   <div class="msg-info">
                     <div class="arrow triangleRight"></div>
-                    我是实施试试女所付所付所我是实施试试女所付所付所我是实施试试女所付所付所我是实施试试女所付所付所
+                    {{item.content}}
                   </div>
                 </div>
                 <div class="msg-avatar" 
@@ -43,8 +45,8 @@
             <div class="from-group">
               <input type="text" class="msg-input" v-model="msgInput">
               <div class="action">
-                <div class="add" v-show="!isSubmit">add</div>
-                <div class="submit" v-show="isSubmit">发送</div>
+                <div class="add" v-show="!isSubmit"><i class="iconfont icon-addition"></i></div>
+                <div class="submit" v-show="isSubmit" @click="sendConHandle">发送</div>
               </div>
             </div>
           </form>
@@ -58,6 +60,7 @@
 <script>
   import header from 'components/header/header'
   import sideBar from 'components/slidebar/slidebar'
+  import axios from 'axios'
   
   export default {
     name: 'message',
@@ -65,7 +68,8 @@
       return {
         headerTxt: '消息上墙',
         showSideBar: false,
-        msgInput: ''
+        msgInput: '',
+        list: [],
       }
     },
     methods: {
@@ -74,6 +78,18 @@
       },
       parentHeader(data) {
         this.showSideBar = data
+      },
+      sendConHandle() {
+        // console.log(this.msgInput);
+        axios.get(`${this.host.wallsedCon}/contnet/${this.msgInput}`)
+        .then((res) => {
+          if (res.data.code === 1) {
+            this.list.push({'name': 'jeson', 'content': this.msgInput})
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
       }
     },
     computed: {
@@ -214,8 +230,12 @@
             .add{
               width:pxTorem(42px);
               height:pxTorem(42px);
-              border:1px solid #ddd;
+              // border:1px solid #ddd;
               border-radius:50%;
+              .iconfont{
+                font-size:34px;
+                color:#a7a2a2;
+              }
             }
             .submit{
               background-color:green;

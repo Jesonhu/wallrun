@@ -25,12 +25,24 @@
 </template>
 
 <script>
+  import axios from 'axios'
+
   export default {
-    name: 'hello',
+    name: 'helloHor',
+    mounted() {
+      axios.post(this.host.indexUrl)
+      .then((res) => {
+        // openid
+        // console.log(res.data.openid)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    },
     data() {
       return {
-        title: '微场景-炫幕',
-        bottomTxt: '由武汉炫幕网络科技有限公司提供技术支持',
+        title: '微场景-荆门恒大',
+        bottomTxt: '@炫幕网络',
 
         list: [
           {
@@ -41,13 +53,13 @@
             url: '/message',
             name: '消息上墙'
           },
-          {
-            url: '/lottery',
-            name: '抽奖'
-          },
+          // {
+          //   url: '/lottery',
+          //   name: '抽奖'
+          // },
           {
             url: '/vote',
-            name: '投票墙'
+            name: '投票'
           }
         ]
       }
@@ -64,7 +76,7 @@
         top:0;
         bottom:0;
         width:100%;
-        background-image:url('../../assets/mobile_bg1.jpg');
+        background-image:url('../../assets/mobile_bg01.jpg');
         @include bgImg100('');
 
         & > *{
@@ -77,7 +89,7 @@
           box-sizing:border-box;
           align-items:center;
           justify-content:center;
-          height:30%;
+          height:20%;
           width:100%;
           border-bottom:1px solid #5A6174;
           
@@ -88,12 +100,12 @@
         }
 
         .main-bd{
-          height:50%;
+          height:62%;
           .list{
             height:100%;
             .item{
-              width:50%;
-              height:50%;
+              width:33%;
+              height:100%;
               float:left;
               display:flex;
               align-items:center;
@@ -112,28 +124,23 @@
                   display:block;
                   color:$txtColor;
                   margin-top:5px;
-                  font-size:13px;
+                  font-size:18px;
                 }
               }
 
               &:nth-child(1){
                 i.icon{
-                  background-image:url('../../assets/qd_icon.png');
+                  background-image:url('../../assets/qdicon.png');
                 }
               }
               &:nth-child(2){
                 i.icon{
-                  background-image:url('../../assets/xxsq_icon.png');
+                  background-image:url('../../assets/xxsqicon.png');
                 }
               }
               &:nth-child(3){
                 i.icon{
-                  background-image:url('../../assets/cj_icon.png');
-                }
-              }
-              &:nth-child(4){
-                i.icon{
-                  background-image:url('../../assets/tp_icon.png');
+                  background-image:url('../../assets/tpicon.png');
                 }
               }
             }
@@ -143,7 +150,7 @@
         .bottom{
           box-sizing:border-box;
           padding-top:pxTorem(39px);
-          height:20%;
+          height:18%;
           border-top:1px solid #5A6174;
           color:$txtColor;
           font-size:15px;
