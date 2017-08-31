@@ -55,7 +55,7 @@
       }
       .txt{
         display:block;
-        margin-top:57px;
+        margin-top:pxTorem(57px);
         color:$txtColor;
       }
     }

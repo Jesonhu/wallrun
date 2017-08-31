@@ -7,6 +7,9 @@
 
         <div class="main-bd">
           <div class="banner" style="background-image:url(http://img4.imgtn.bdimg.com/it/u=3432487329,2901563519&fm=26&gp=0.jpg)"></div>
+          <!-- 已投票 -->
+          <v-progress></v-progress>
+
           <form @submit.prevent="submit">
           <ul class="main-list">
             <li class="main-item">
@@ -96,6 +99,7 @@
 <script>
   import header from 'components/header/header'
   import sideBar from 'components/slidebar/slidebar'
+  import vProgress from 'components/progress/progress'
   import { Toast, MessageBox } from 'mint-ui'
   
   export default {
@@ -124,7 +128,8 @@
     },
     components: {
       vHeader: header,
-      sideBar
+      sideBar,
+      vProgress
     }
   }
 </script>

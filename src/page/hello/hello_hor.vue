@@ -30,10 +30,15 @@
   export default {
     name: 'helloHor',
     mounted() {
+
+      // mock
+      this.$store.dispatch('setUserInfo', {openid: 'otnOEs5O0CEez3_d_yKXmIQVA4p0', loginStatus: true})
+      
       axios.post(this.host.indexUrl)
       .then((res) => {
         // openid
         // console.log(res.data.openid)
+        
       })
       .catch((error) => {
         console.log(error)
