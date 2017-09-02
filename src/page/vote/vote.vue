@@ -5,102 +5,84 @@
           :showSideBar="showSideBar"
           @parentHeader="parentHeader"></v-header>
 
-        <div class="main-bd">
+        <div class="main-bd" v-show="!showLoading">
           <div class="banner" style="background-image:url(http://img4.imgtn.bdimg.com/it/u=3432487329,2901563519&fm=26&gp=0.jpg)"></div>
-          <!-- 已投票 -->
-          <v-progress></v-progress>
+          
+          <div class="no-vote" v-show="!showVote">暂无投票~</div>
+          <div class="vote-con" v-show="showVote">
+          
+            <!-- 已投票 -->
+            <v-progress :hasList="hasList"></v-progress>
 
-          <form @submit.prevent="submit">
-          <ul class="main-list">
-            <li class="main-item">
-              <div class="title">你最喜欢哪个节目</div>
-              <div class="cell">
-                  <div class="cell-wrapper">
-                    <div class="cell-title">
-                      <label for="" class="radiolist-label">
-                        <span class="radio">
-                          <input type="checkbox" name="pn" class="radio-input" value="是">
-                          <span class="checkbox-core"></span>
-                        </span>
-                        <span class="radio-label">跑男</span>
-                      </label>
+            <!-- 未投票 -->
+            <form @submit.prevent="submit" ref="form" v-if="unList.length > 0">
+            <ul class="main-list">
+              <!-- 多选 -->
+              <li class="main-item"
+               v-if="unList.length > 0 && item.type == 2"
+               v-for="(item,index) in unList">
+                <div class="title">{{item.title}}</div>
+                <div class="cell"
+                 v-for="(select, key, index) in item.option">
+                    <div class="cell-wrapper">
+                      <div class="cell-title">
+                        <label for="" class="radiolist-label">
+                          <span class="radio">
+                            <input type="checkbox" :value="key" class="radio-input" v-model="checkedNames0">
+                            <span class="checkbox-core"></span>
+                          </span>
+                          <span class="radio-label">{{select}}</span>
+                        </label>
+                      </div>
                     </div>
-                  </div>
-              </div>
-              <div class="cell">
-                  <div class="cell-wrapper">
-                    <div class="cell-title">
-                      <label for="" class="radiolist-label">
-                        <span class="radio">
-                          <input type="checkbox" name="wsgs" class="radio-input" value="是">
-                          <span class="checkbox-core"></span>
-                        </span>
-                        <span class="radio-label">我是歌手</span>
-                      </label>
+                </div>
+                <span v-if="false">checkedNames0:{{checkedNames0}}</span>
+              </li>
+              <!-- 单选 -->
+              <li class="main-item"
+                v-if="unList.length > 0 && item.type == 1"
+                v-for="item in unList">
+                <div class="title">{{item.title}}</div>
+                <div class="cell"
+                 v-for="(radio, key, index) in item.option">
+                    <div class="cell-wrapper">
+                      <div class="cell-title">
+                        <label for="" class="radiolist-label">
+                          <span class="radio">
+                            <input type="radio" class="radio-input" :value="key" v-model="picked1">
+                            <span class="radio-core"></span>
+                          </span>
+                          <span class="radio-label">{{radio}}</span>
+                        </label>
+                      </div>
                     </div>
-                  </div>
-              </div>
-              <div class="cell">
-                  <div class="cell-wrapper">
-                    <div class="cell-title">
-                      <label for="" class="radiolist-label">
-                        <span class="radio">
-                          <input type="checkbox" name="bbqn" class="radio-input" value="是">
-                          <span class="checkbox-core"></span>
-                        </span>
-                        <span class="radio-label">爸爸去哪</span>
-                      </label>
-                    </div>
-                  </div>
-              </div>
-            </li>
-            <li class="main-item">
-              <div class="title">昨天是否是七夕</div>
-              <div class="cell">
-                  <div class="cell-wrapper">
-                    <div class="cell-title">
-                      <label for="" class="radiolist-label">
-                        <span class="radio">
-                          <input type="radio" name="qx" class="radio-input" value="是">
-                          <span class="radio-core"></span>
-                        </span>
-                        <span class="radio-label">是</span>
-                      </label>
-                    </div>
-                  </div>
-              </div>
-              <div class="cell">
-                  <div class="cell-wrapper">
-                    <div class="cell-title">
-                      <label for="" class="radiolist-label">
-                        <span class="radio">
-                          <input type="radio" name="qx" class="radio-input" value="是">
-                          <span class="radio-core"></span>
-                        </span>
-                        <span class="radio-label">否</span>
-                      </label>
-                    </div>
-                  </div>
-              </div>
-            </li>
-          </ul>
-          <div class="submit-wrap">
-            <button class="btn submit" 
-             @click="submitClickHandle">提交</button>
+                </div>
+              </li>
+            </ul>
+            <div class="submit-wrap">
+              <button class="btn submit" 
+              @click="submitClickHandle">提交</button>
+            </div>
+            </form>
           </div>
-          </form>
         </div>
 
         <!-- slide-bar -->
         <side-bar :show="showSideBar" @parent="sideBarInit"></side-bar>
+
+        <!-- loading -->
+        <loading :show="showLoading"></loading>
     </div>
 </template>
 
 <script>
+  import qs from 'qs'
   import header from 'components/header/header'
   import sideBar from 'components/slidebar/slidebar'
   import vProgress from 'components/progress/progress'
+  import loading from 'components/loading/loading'
   import { Toast, MessageBox } from 'mint-ui'
+  import axios from 'axios'
   
   export default {
     name: 'vote',
@@ -108,28 +90,122 @@
       return {
         headerTxt: '投票',
 
-        showSideBar: false
+        showLoading: true,
+        showSideBar: false,
+
+        hasList: [], // 已经投过票
+        unList: [], // 未投票,
+        showVote: false,
+        // 复选
+        checkedNames0: [],
+        checked0Id: 0,
+        checkedNames1: [],
+        checked1Id: 0,
+        checkedNames2: [],
+        checked2Id: 0,
+        checkedNames3: [],
+        checked3Id: 0,
+        checkedNames4: [],
+        checked4Id: 0,
+        checkedNames5: [],
+        // 单选
+        picked1: [],
+        picked2: []
       }
+    },
+    mounted() {
+      axios.post(this.host.getVote)
+      .then((res) => {
+        this.showLoading = false
+        if (!(res.data.code === 0)) {
+          let code = res.data.code
+          let voteData = res.data.vote
+          let voteOption = res.data.option
+          this.showVote = true
+
+          if (code === 2) { // 返回已经投过票
+          /*
+            [
+              {
+                voteid: 2,
+                option: [选项]
+              }
+            ]
+           */
+            this.hasList.push({id: voteData.id, title: voteData.title, option: voteOption})
+          } else if(code === 1) { // 返回未投过票
+          /*
+            [
+              {
+                voteid: 2,
+                title: ‘投票测试’,
+                type: 2,
+                option: {}
+              }
+            ]
+           */
+            this.unList.push({id: voteData.id, title: voteData.title, type: voteData.type, option: voteOption})
+          }
+        } else { // code:0
+          this.showVote = false
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     },
     methods: {
       // form submit
-      submit() {
-        console.log()
+      submit() { // 表单默认提交
+        let option, paramsResult
+        if (this.unList[0].type == 2) {
+          option = this.checkedNames0.toString()
+          paramsResult = {
+            voteid: this.unList[0].id,
+            option: option
+          }
+        } else {
+          option = this.picked1.toString()
+          paramsResult = {
+            voteid: this.unList[0].id,
+            option: option
+          }
+        }
+        paramsResult = qs.stringify(paramsResult)
+        console.log(paramsResult)
+        axios.post(this.host.resultVote, paramsResult)
+        .then((res) => {
+          // console.log(res.data)
+          if (res.data.code == 1) {
+            this.$router.push({path: '/vote'})
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
       },
       submitClickHandle() {
-        console.log(1)
+        // 按钮点击出发
       },
       sideBarInit () { // 处理sidebar发来的请求
         this.showSideBar = false
       },
       parentHeader(data) {
         this.showSideBar = data
+      },
+      handleMessageBox (title, msg) {
+        MessageBox({
+          title: title,
+          message: msg,
+          showCancelButton: false
+        })
       }
     },
     components: {
       vHeader: header,
       sideBar,
-      vProgress
+      vProgress,
+      loading
     }
   }
 </script>
@@ -156,6 +232,12 @@
         height:pxTorem(160px);
         background-repeat:no-repeat;
         background-size:100% 100%;
+      }
+      .no-vote{
+        margin-top:50px;
+        width:100%;
+        text-align:center;
+        color:$themColor;
       }
       .main-list {
         .main-item{

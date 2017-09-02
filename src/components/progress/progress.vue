@@ -1,28 +1,21 @@
 <template>
     <div class="progress">
           <ul class="main-list">
-            <li class="main-item">
-              <div class="title">你最喜欢哪个节目</div>
-              <div class="progress-detail">
-                  <p class="detail-title">跑男</p>
+            <li class="main-item"
+             v-if="hasList.length > 0"
+             v-for="item in hasList">
+              <div class="title">{{item.title}}</div>
+              <div class="progress-detail" 
+               v-if="item.option.length > 0"
+               v-for="(secItem,index) in item.option">
+                  <p class="detail-title">{{secItem.option}}</p>
                   <div class="progress-con">
                       <div class="progress-outer">
                           <div class="progress-inner">
-                            <div class="progress-bg" style="width:10%"></div>
+                            <div class="progress-bg" :style="{width: valueList[index]}"></div>
                           </div>
                       </div>  
-                      <div class="progress-txt">20票</div>
-                  </div>
-              </div>
-              <div class="progress-detail">
-                  <p class="detail-title">跑男2</p>
-                  <div class="progress-con">
-                      <div class="progress-outer">
-                          <div class="progress-inner">
-                            <div class="progress-bg" style="width:10%"></div>
-                          </div>
-                      </div>  
-                      <div class="progress-txt">20票</div>
+                      <div class="progress-txt">{{secItem.total}}票</div>
                   </div>
               </div>
             </li>
@@ -31,15 +24,46 @@
 </template>
 
 <script>
-  
   export default {
-    name: 'vote',
+    name: 'c-progress',
+    props: ['hasList'],
     data() {
       return {
+          valueList: []
       }
     },
+    mounted() {
+        setTimeout(() => {
+            if (this.hasList.length > 0 && this.hasList[0].option.length > 0) {
+                let option = this.hasList[0].option
+
+                option.forEach((item) => {
+                    let result = item.total / this.allTotal
+                    if (result == NaN) {
+                        this.valueList.push(0)
+                    } else {
+                        this.valueList.push( (result*100 + '%') )
+                    }
+                })
+            }
+        }, 500)
+    },
     methods: {
-      
+    },
+    computed: {
+        allTotal() {
+            let allTotalNum = 0
+            if (this.hasList.length > 0 && this.hasList[0].option.length > 0) {
+                let option = this.hasList[0].option
+                
+                option.forEach((item) => {
+                    allTotalNum += item.total
+                })
+                return allTotalNum
+            } else {
+                return 0
+            }
+        }
     },
     components: {
     }

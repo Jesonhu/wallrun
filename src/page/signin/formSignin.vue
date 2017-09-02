@@ -68,7 +68,8 @@
   import { Toast, MessageBox } from 'mint-ui'
   import { isPhone, isUserName } from '../../plugins/form'
   import axios from 'axios'
-
+  
+  let _this;
   export default {
     data () {
       return {
@@ -95,12 +96,25 @@
     },
     methods: {
       submit () {
+        _this = this
         if (this.canSubmitMark) {
         //   const formatData = JSON.stringify(this.form)
         //   console.log(formatData)
           axios.post(this.host.signInExtra, qs.stringify(this.form))
             .then((res) => {
-              console.log(res.data)
+              if (res.data.code === 1) {
+                _this.handleMessageBox('签到成功', '即将跳转到下一环节')
+                setTimeout(function() {
+                  _this.$router.push({path: '/message'})
+                }, 1000)
+              } else if (res.data.code === 2) {
+                _this.handleMessageBox('已经签到过', '即将跳转到下一环节')
+                setTimeout(function() {
+                  _this.$router.push({path: '/message'})
+                }, 1000)
+              } else if (res.data.code === 0) {
+                _this.handleMessageBox('签到失败', '请重新签到')
+              }
             })
             .catch((err) => {
               console.log(err)
@@ -161,11 +175,11 @@
           duration: 1000
         })
       },
-      handleMessageBox (msg) {
+      handleMessageBox (title, msg) {
         MessageBox({
-          title: '提示',
+          title: title,
           message: msg,
-          showCancelButton: true
+          showCancelButton: false
         })
       },
       // mint picker

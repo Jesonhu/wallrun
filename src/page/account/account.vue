@@ -11,11 +11,11 @@
               <div class="msg-title">
                 <span class="bd">
                   <em class="triangleLeft"></em>
-                  2017-08-30 12:00:00
+                  暂无消息
                 </span>
               </div>
               <div class="msg-bd">
-                未获得奖励
+                
               </div>
             </li>
           </ul>

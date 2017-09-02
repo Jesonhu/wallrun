@@ -22,18 +22,19 @@
               </div>
             </li> -->
             <li class="msg-item" 
-              v-if="this.list.length > 0 && this.list.content"
-              v-for="(item,key) in this.list">
+              v-if="list.length > 0"
+              v-for="(item,key) in list">
               <div class="msg-wrap me">
                 <div class="msg-con">
-                  <div class="msg-user">Jeson</div>
+                  <div class="msg-user">{{item.nickname}}</div>
                   <div class="msg-info">
                     <div class="arrow triangleRight"></div>
                     {{item.content}}
                   </div>
                 </div>
-                <div class="msg-avatar" 
-                 style="background-image:url('https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2182925329,386985427&fm=117&gp=0.jpg')"></div>
+                <div class="msg-avatar">
+                  <img :src="item.image" alt="">
+                </div>
                 
               </div>
             </li>
@@ -81,15 +82,28 @@
       },
       sendConHandle() {
         // console.log(this.msgInput);
-        axios.get(`${this.host.wallsedCon}/contnet/${this.msgInput}`)
+        axios.post(this.host.wallsedCon, {
+          content: this.msgInput
+        })
         .then((res) => {
+          // console.log(res.data)
           if (res.data.code === 1) {
-            this.list.push({'name': 'jeson', 'content': this.msgInput})
+            this.list.push({'nickname': res.data.nickname, 'content': this.msgInput, 'image': res.data.image})
+            // console.log(this.list)
           }
         })
         .catch((err) => {
           console.log(err)
         })
+      },
+      tounicode(data) {
+        if(data == '') return '请输入汉字';
+        var str =''; 
+        for(var i=0;i<data.length;i++)
+        {
+            str+="\\u"+parseInt(data[i].charCodeAt(0),10).toString(16);
+        }
+        return str;
       }
     },
     computed: {
@@ -129,6 +143,9 @@
       height:100%;
       .msg-list{
         width:100%;
+        .msg-item:last-child{
+          margin-bottom:100px;
+        }
       }
       .msg-wrap{
         display:flex;
@@ -142,6 +159,11 @@
           border-radius:100%;
           background-repeat:no-repeat;
           background-size:100% 100%;
+          img{
+            width:pxTorem(36px);
+            height:pxTorem(36px);
+            border-radius:100%;
+          }
         }
         .msg-con{
           flex:1;

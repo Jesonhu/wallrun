@@ -27,6 +27,7 @@
   import header from 'components/header/header'
   import sideBar from 'components/slidebar/slidebar'
   import loading from 'components/loading/loading'
+  import { MessageBox } from 'mint-ui'
   import axios from 'axios'
   
   let _this = null
@@ -63,12 +64,17 @@
         let actionType = 0
         if (res.data.code === 1) {
           actionType = res.data.type
-          
           if (actionType === 0) { // 已经扫码过了
             axios.post(this.host.signIn).then((secRes) => {
               this.msg= secRes.data.msg
-              this.welcome = secRes.data.welcome
+              this.welcome = secRes.data.welcome || '恭喜您，请体验我们的后续活动！'
               _this.showLoading = false
+              setTimeout(function() {
+                _this.handleMessageBox('签到成功', '即将自动跳转到下一环节')
+              }, 1000)
+              setTimeout(function() {
+                 _this.$router.push({path: '/message'})
+              }, 2000)
             }).catch((secErr) => {
               console.log('has code but check signInStatus error')
             })
@@ -88,6 +94,13 @@
       },
       parentHeader(data) {
         this.showSideBar = data
+      },
+      handleMessageBox (title, msg) {
+        MessageBox({
+          title: title,
+          message: msg,
+          showCancelButton: false
+        })
       }
     },
     components: {
