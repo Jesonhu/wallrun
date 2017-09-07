@@ -71,9 +71,10 @@
   
   let _this;
   export default {
+    name: 'formSignin',
     data () {
       return {
-        headerTxt: '投票',
+        headerTxt: '表单签到',
         showSideBar: false,
 
         canSubmitMark: false,
@@ -104,14 +105,14 @@
             .then((res) => {
               if (res.data.code === 1) {
                 _this.handleMessageBox('签到成功', '即将跳转到下一环节')
-                setTimeout(function() {
-                  _this.$router.push({path: '/message'})
-                }, 1000)
+                // setTimeout(function() {
+                //   _this.$router.push({path: '/message'})
+                // }, 1000)
               } else if (res.data.code === 2) {
                 _this.handleMessageBox('已经签到过', '即将跳转到下一环节')
-                setTimeout(function() {
-                  _this.$router.push({path: '/message'})
-                }, 1000)
+                // setTimeout(function() {
+                //   _this.$router.push({path: '/message'})
+                // }, 1000)
               } else if (res.data.code === 0) {
                 _this.handleMessageBox('签到失败', '请重新签到')
               }

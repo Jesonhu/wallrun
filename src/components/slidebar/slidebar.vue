@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar" :class="{active:isActive}">
     <div class="bg-wrap" @click="active"></div>
-    <div class="con-wrap">
+    <div class="con-wrap" :style="{backgroundImage: `url(${bgImg})`}">
       <div class="bg-wrap"></div>
       <div class="avatar-wrap">
       </div>
@@ -19,6 +19,7 @@
 
 <script>
   import slideMenu from 'components/slideMenu/slideMenu'
+  import { mapState } from 'vuex'
 
   export default {
     name: 'sidebar',
@@ -44,6 +45,9 @@
       }
     },
     computed: {
+      ...mapState({
+        bgImg: state => state.look.localLooksInfo.bgImg
+      })
     },
     watch: {
       show () {

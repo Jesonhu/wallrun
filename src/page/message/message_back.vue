@@ -7,7 +7,7 @@
 
         <!-- 消息内容显示 -->
         <div class="main-bd">
-          <ul class="msg-list" ref="scroll">
+          <ul class="msg-list">
            <!-- <li class="msg-item">
               <div class="msg-wrap">
                 <div class="msg-avatar" 
@@ -22,41 +22,21 @@
               </div>
             </li> -->
             <li class="msg-item" 
-              v-if="messageList.length > 0"
-              v-for="(item,key) in messageList">
-
-              <!-- 我发送的 -->
-              <div class="msg-wrap me" v-if="item.type === 3">
+              v-if="list.length > 0"
+              v-for="(item,key) in list">
+              <div class="msg-wrap me">
                 <div class="msg-con">
-                  <div class="msg-user">{{item.msgUser.userName}}</div>
+                  <div class="msg-user">{{item.nickname}}</div>
                   <div class="msg-info">
                     <div class="arrow triangleRight"></div>
-                    {{item.msg}}
+                    {{item.content}}
                   </div>
                 </div>
                 <div class="msg-avatar">
-                  <img :src="item.msgUser.userImg" alt="">
+                  <img :src="item.image" alt="">
                 </div>
                 
               </div>
-
-              <!-- 别人发送的 -->
-              <div class="msg-wrap" v-if="item.type === 2">
-                <div class="msg-avatar"><img :src="item.msgUser.userImg" alt=""></div>
-                <div class="msg-con">
-                  <div class="msg-user">{{ item.msgUser.userName }}</div>
-                  <div class="msg-info">
-                    <div class="arrow triangleLeft"></div>
-                    {{ item.msg }}
-                  </div>
-                </div>
-              </div>
-
-              <!-- 系统发送的 -->
-              <div class="msg-wrap server" v-if="item.type === 1">
-                  <span class="tip">{{ item.msg }}</span>
-              </div>
-
             </li>
           </ul>
         </div>
@@ -82,10 +62,11 @@
   import header from 'components/header/header'
   import sideBar from 'components/slidebar/slidebar'
   import axios from 'axios'
-  import io from '../../../lib/socket.io';
   import { mapState } from 'vuex'
+  // import io from 'src/lib/socket.js'
   
-  let unicodeUserInfo;
+  let ws;
+  let _this;
   export default {
     name: 'message',
     data() {
@@ -98,7 +79,6 @@
         userInfo: {},
         userNameList: [],
         onlineUserList: [],
-        messageList: [],
         connnectState: false
       }
     },
@@ -107,64 +87,73 @@
       this.messageList = []; // type = 1 提示消息 type = 2 其他人聊天消息 type = 3 自己的聊天消息
     },
     mounted() {
-      this.connectEvent();
-    },
-    updated () {
-        this.scroll();
+      // this.connectEvent();
+      _this = this;
+      this.connect();
     },
     methods: {
       // 初始连接
-      connectEvent() {
-        let _this = this;
-        const chatHost = 'http://60.205.218.81';
-        const PORT = '8200';
+      connect() {
+          // 创建websocket
+          ws = new WebSocket("ws://192.168.0.58:2346");
 
-        this.userInfo = {
-          userId: this.openId, // 获取 vuex中的openid
-          userName: this.nickname, // 昵称
-          userImg: this.headimgurl, // 缩略图
-        }
-        unicodeUserInfo = Object.assign({}, this.userInfo); // 复制一份转码用
-        // console.log('unicodeUserInfo before', unicodeUserInfo);
-        unicodeUserInfo.userName = this.decToHex( unicodeUserInfo.userName );
-        // console.log('unicodeUserInfo after', unicodeUserInfo);
-        console.log(io);
-        this.httpServer = io.connect(`${chatHost}:${PORT}`); // 创建客户端连接
+          ws.onopen = _this.onopen;
 
-        
-        this.httpServer.emit('login', unicodeUserInfo);
-        // console.log('this.userInfo', this.userInfo);
-        let onlineUserList = this.singleHexToDec( this.userInfo ); // 在线列表
-        // console.log( onlineUserList );
-        this.onlineUserList.push( onlineUserList );
+          ws.onmessage = _this.onmessage;
 
-        // 接收广播过来的 login(有针对性接收)
-        this.httpServer.on('login', function (obj) {
-            console.log('login obj', obj);
-            _this.onlineUserList = obj.onlineUserList;
-            _this.messageList.push({type: 1, msg: '用户 ' + obj.msgUser.userName + ' 加入聊天', msgUser: obj.msgUser});
-            // console.log('_this.onlineUserList', _this.onlineUserList);
-        });
-        this.httpServer.on('loginSuccess', function (obj) { // 1 成功
-            console.log('loginSuccess');
-            if (obj.sign === 1) {
-                _this.onlineUserList = obj.onlineUserList;
-                _this.connectState = true; // 登录状态
-                // _this.headerConfig.left = me.userInfo.userImg.toString(); 
-                console.log('连接好了');
-            }
-        });
-        // 退出
-        this.httpServer.on('logout', function (obj) {
-            _this.messageList.push({type: 1, msg: '用户 ' + obj.msgUser.userName + ' 退出聊天', msgUser: obj.msgUser});
-        });
-        // 发出消息
-        this.httpServer.on('message', function (obj) {
-            console.log('message', obj);
-            _this.onlineUserList = obj.onlineUserList;
-            _this.messageList.push({type: 2, msg: obj.msg, msgUser: obj.user});
-        });
-        
+          ws.onsend = _this.onsend;
+
+          // console.log(ws);
+          ws.onclose = function() {
+              console.log("连接关闭，定时重连");
+              _this.connect();
+          };
+          ws.onerror = function() {
+              console.log("出现错误");
+          };
+      },
+
+      onopen () {
+          axios.get('http://lmlin.tunnel.echomod.cn/scene/public/index.php/index/index/index',function(data){
+
+              var login = {
+                  'type' : 'login',
+                  'openid' : data.openid
+              };
+
+              login = JSON.stringify(login);
+
+              ws.send(login);
+
+          });
+      },
+
+      // 消息处理 获取到聊天信息
+      onmessage(e) {
+          var data = eval("("+e.data+")");
+          console.log(data);
+          this.list.push({
+            nickname: data.nickname,
+            headimgurl: data.headimgurl,
+            content: data.content,
+            fromMe: data.openid == this.openId
+          });
+
+          switch(data['type']){ // 判断 data['type']
+              case 'login':
+                  break;
+              case 'msg':
+                  break;
+              case 'send':
+                  break;    
+          }
+      },
+
+      // 发送消息
+      onsend(msg) {
+          msg = JSON.stringify(msg);
+          // ws.send(msg);
+          console.log(ws);
       },
 
       sideBarInit () { // 处理sidebar发来的请求
@@ -174,83 +163,52 @@
         this.showSideBar = data
       },
       sendConHandle() {
-        // 发消息到聊天服务器
-        if (this.msgInput.length > 0) {
-          this.httpServer.emit('message', {msg: this.msgInput, user: unicodeUserInfo});
-          this.messageList.push({type: 3, msg: this.msgInput, msgUser: this.userInfo});
-            // if (this.connectState) { // 在线
-            //     this.httpServer.emit('message', {msg: this.msgInput, user: unicodeUserInfo});
-            //     this.messageList.push({type: 3, msg: this.msgInput, msgUser: unicodeUserInfo});
-            // } else {
-            //     this.$refs.confirm.modelOpen();
-            // }
-        }  
-
-        // console.log(this.msgInput); 发送消息到后台
+        // console.log(this.msgInput); 发消息到数据库
         axios.post(this.host.wallsedCon, {
           content: this.msgInput
         })
         .then((res) => {
           // console.log(res.data)
-          this.msgInput = '';
           if (res.data.code === 1) {
-            // this.list.push({'nickname': res.data.nickname, 'content': this.msgInput, 'image': res.data.image})
+            this.list.push({'nickname': res.data.nickname, 'content': this.msgInput, 'image': res.data.image})
             // console.log(this.list)
           }
         })
         .catch((err) => {
           console.log(err)
-        })
+        });
+
+        // 发消息上墙
+        var msg = {
+                'type' : 'msg',
+                'openid' : this.openId,
+                'nickname' : 'jeson__hu', // 来自初始请求
+                'headimgurl' : '', // 来自初始请求
+                'content' : this.msgInput
+            };
+        this.onsend(msg);
       },
-      trim (s) {
-          return s.replace(/(^\s*)|(\s*$)/g, '');
-      },
-      scroll () { // 发消息滚动到底部
-          // console.log('vuex update');
-          this.$refs.scroll.scrollTop = this.$refs.scroll.scrollHeight;
-      },
-      
-      // 编码相关
-      totalHexToDec(arr) { // 将obj.onlineuserList转成中文
-        if (arr.length > 0) {
-          arr.forEach((item) => {
-            item.userName = this.hexToDec( item.userName );
-          });
+      tounicode(data) {
+        if(data == '') return '请输入汉字';
+        var str =''; 
+        for(var i=0;i<data.length;i++)
+        {
+            str+="\\u"+parseInt(data[i].charCodeAt(0),10).toString(16);
         }
-        return arr;
-      },
-      singleHexToDec(obj) { // 将单个对象转成中文
-        obj.userName = this.hexToDec( obj.userName );
-        return obj;
-      },
-      // unicode 编码转换
-      // 中文转unicode
-      decToHex(str) {
-          var res=[];
-          for(var i=0;i < str.length;i++)
-              res[i]=("00"+str.charCodeAt(i).toString(16)).slice(-4);
-          // console.log('decToHex', "\\u"+res.join("\\u") ); 
-          return "\\u"+res.join("\\u");
-      },
-      // unicode转中文
-      hexToDec(str) {
-          str=str.replace(/\\/g,"%");
-          return unescape(str);
+        return str;
       }
     },
     computed: {
-      ...mapState({
-        openId: state => state.user.localUserInfo.openId,
-        nickname: state => state.user.localUserInfo.nickname,
-        headimgurl: state => state.user.localUserInfo.headimgurl
-      }),
       isSubmit() {
         if (this.msgInput !== '' && this.msgInput.length > 0) {
           return true
         } else {
           return false
         }
-      }
+      },
+      ...mapState({
+        openId: state => state.user.localUserInfo.openId
+      })
     },
     components: {
       vHeader: header,
@@ -280,8 +238,6 @@
       height:100%;
       .msg-list{
         width:100%;
-        height:100%;
-        overflow-y:auto;
         .msg-item:last-child{
           margin-bottom:100px;
         }
@@ -338,20 +294,6 @@
                 left:100%;
               }
             }
-          }
-        }
-        &.server{
-          text-align: center;
-          padding: 20px 0;
-          .tip{
-            padding: 3px 6px;
-            border-radius: 2px;
-            background: rgba(0, 0, 0, 0.2);
-            color: #fff;
-            font-size: 12px;
-            line-height: 12px;
-            margin: 0 auto;
-            display:inline-block;
           }
         }
       }

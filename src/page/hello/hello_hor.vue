@@ -1,5 +1,5 @@
 <template>
-    <div class="hello">
+    <div class="hello" :style="{backgroundImage: `url(${bgImg})`}">
         <div class="bellow"></div>
         <!-- 顶部 -->
         <div class="top">
@@ -26,22 +26,14 @@
 
 <script>
   import axios from 'axios'
+  import { mapState } from 'vuex'
 
   export default {
     name: 'helloHor',
-    mounted() {
-      axios.post(this.host.indexUrl)
-      .then((res) => {
-        this.$store.dispatch('setUserInfo', {openid: res.data.openid, loginStatus: true})
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-    },
     data() {
       return {
-        title: '微场景-荆门恒大',
-        bottomTxt: '@炫幕网络',
+        title: '微现场-荆门恒大',
+        bottomTxt: '©炫幕网络',
 
         list: [
           {
@@ -62,6 +54,27 @@
           }
         ]
       }
+    },
+    mounted() {
+      axios.post(this.host.indexUrl)
+      .then((res) => {
+        this.$store.dispatch('setUserInfo', {openId: res.data.openid, nickname: res.data.nickname, headimgurl: res.data.headimgurl, loginStatus: true})
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+      axios.post(this.host.skinBgImg)
+      .then((res) => {
+        this.$store.dispatch('setLooksInfo', {bgImg: `${this.host.domain}/scene/${res.data.wapbg}`})
+      })
+      .catch((err) => {
+        console.log(error);
+      })
+    },
+    computed: {
+      ...mapState({
+        bgImg: state => state.look.localLooksInfo.bgImg
+      })
     }
   }
 </script>

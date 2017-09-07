@@ -60,7 +60,7 @@
         }
 
         .iconfont{
-            color:$txtColor;
+            color:#755d5d;
             font-weight:900;
             font-size:28px;
         }

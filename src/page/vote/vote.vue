@@ -172,12 +172,14 @@
           }
         }
         paramsResult = qs.stringify(paramsResult)
-        console.log(paramsResult)
+        // console.log(paramsResult)
         axios.post(this.host.resultVote, paramsResult)
         .then((res) => {
           // console.log(res.data)
           if (res.data.code == 1) {
-            this.$router.push({path: '/vote'})
+            console.log('投票成功');
+            // this.$router.push({path: '/vote'})
+            window.location.reload();
           }
         })
         .catch((err) => {

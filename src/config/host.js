@@ -6,6 +6,7 @@ const domain = config.BASE_URL // 主域名
 
 const host = {
     domain: domain,
+    skinBgImg: `${domain}/scene/public/index.php/index/screen/wapBg`,
     indexUrl: `${domain}/scene/public/index.php/index/index/index`,
 
     // 签到页面
