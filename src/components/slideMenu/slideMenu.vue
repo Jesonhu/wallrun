@@ -6,7 +6,7 @@
        :class="{'is-active': index==999}">
         <router-link class="link"
          :to="item.link">
-          <i class="icon fa"
+          <i class="iconfont"
            :class="item.icon"></i>
           <span class="name">{{item.name}}</span>
         </router-link>
@@ -21,12 +21,12 @@
       return {
         list: [
           {
-            icon: 'fa-home',
+            icon: 'icon-qiandao1',
             link: '/signin',
             name: '签到'
           },
           {
-            icon: 'fa-home',
+            icon: 'icon-xiaoxi',
             link: '/message',
             name: '消息上墙'
           },
@@ -36,12 +36,12 @@
           //   name: '抽奖'
           // },
           {
-            icon: 'fa-home',
+            icon: 'icon-toupiao',
             link: '/vote',
             name: '投票'
           },
           {
-            icon: 'fa-home',
+            icon: 'icon-user',
             link: '/account',
             name: '个人中心'
           }
@@ -87,13 +87,14 @@
         flex-wrap: nowrap;
         align-items: center;
         color:$color;
-        .icon{
+        .icon,
+        .iconfont{
           flex:0 0 20px;
           height:20px;
           text-align: center;
           line-height: 20px;
           color:$color;
-          font-size: 23px;
+          font-size: 18px;
         }
         .name{
           color:$color;

@@ -15,6 +15,7 @@ const host = {
     signInExtra: `${domain}/scene/public/index.php/index/sign/signInExtra`, // 表单页面签到提交
 
     // 消息上墙手机内容发送
+    historyMsg: `${domain}/scene/public/index.php/index/wall/getContent`,
     wallsedCon: `${domain}/scene/public/index.php/index/wall/setContent`,
 
     // 投票墙

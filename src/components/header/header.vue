@@ -8,7 +8,11 @@
             </span>
         </div>
         <h2 class="header-title">{{headerTxt}}</h2>
-        <div class="header-right"></div>
+        <div class="header-right" @click="goHome">
+            <span class="header-home">
+                <i class="iconfont icon-homebig"></i>
+            </span>
+        </div>
     </div>
 </template>
 
@@ -18,6 +22,9 @@
     methods: {
       showSideBarHandle() {
         this.$emit('parentHeader', !this.showSideBar)
+      },
+      goHome() {
+          this.$router.push({path: '/'});
       }
     }
   }
@@ -48,6 +55,11 @@
         }
         .header-right{
             margin-right:10px;
+            align-items:center;
+            justify-content:flex-end;
+            .header-home{
+                padding-top:pxTorem(2px);
+            }
         }
 
         .header-title{

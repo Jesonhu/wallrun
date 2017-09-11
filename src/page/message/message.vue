@@ -82,8 +82,9 @@
   import header from 'components/header/header'
   import sideBar from 'components/slidebar/slidebar'
   import axios from 'axios'
-  import io from '../../../lib/socket.io';
+  import io from '../../../lib/socket.io'
   import { mapState } from 'vuex'
+  let qs = require('qs')
   
   let unicodeUserInfo;
   export default {
@@ -104,9 +105,17 @@
     },
     created() {
       this.userInfo = {};
-      this.messageList = []; // type = 1 提示消息 type = 2 其他人聊天消息 type = 3 自己的聊天消息
+      // this.messageList = []; // type = 1 提示消息 type = 2 其他人聊天消息 type = 3 自己的聊天消息
     },
     mounted() {
+      this.historyMsg();
+
+      this.userInfo = {
+          userId: this.openId, // 获取 vuex中的openid
+          userName: this.nickname, // 昵称
+          userImg: this.headimgurl, // 缩略图
+      };
+
       this.connectEvent();
     },
     updated () {
@@ -117,18 +126,18 @@
       connectEvent() {
         let _this = this;
         const chatHost = 'http://60.205.218.81';
+        const localHost = 'http://192.168.1.15';
         const PORT = '8200';
 
-        this.userInfo = {
-          userId: this.openId, // 获取 vuex中的openid
-          userName: this.nickname, // 昵称
-          userImg: this.headimgurl, // 缩略图
-        }
+        // this.userInfo = {
+        //   userId: this.openId, // 获取 vuex中的openid
+        //   userName: this.nickname, // 昵称
+        //   userImg: this.headimgurl, // 缩略图
+        // }
         unicodeUserInfo = Object.assign({}, this.userInfo); // 复制一份转码用
         // console.log('unicodeUserInfo before', unicodeUserInfo);
         unicodeUserInfo.userName = this.decToHex( unicodeUserInfo.userName );
         // console.log('unicodeUserInfo after', unicodeUserInfo);
-        console.log(io);
         this.httpServer = io.connect(`${chatHost}:${PORT}`); // 创建客户端连接
 
         
@@ -146,7 +155,7 @@
             // console.log('_this.onlineUserList', _this.onlineUserList);
         });
         this.httpServer.on('loginSuccess', function (obj) { // 1 成功
-            console.log('loginSuccess');
+            // console.log('loginSuccess');
             if (obj.sign === 1) {
                 _this.onlineUserList = obj.onlineUserList;
                 _this.connectState = true; // 登录状态
@@ -166,7 +175,30 @@
         });
         
       },
+      // 获取历史消息
+      historyMsg() {
+        let midArr = [{msg: '以下为历史消息', type: 1, msgUser: this.userInfo}];
+        axios.post(`${this.host.historyMsg}`, qs.stringify({page: 1}) )
+        .then((res) => {
+          
+          let resList = res.data.list;
+          if (resList.length > 0) {
+            resList.forEach((item) => {
+              if (item.nickname == this.userInfo.userName) { // 用户名相同
+                midArr.push({msg: item.content, type: 3, msgUser:{userName: item.nickname, userId: -1, userImg: item.headimgurl} })
+              } else {
+                midArr.push({msg: item.content, type: 2, msgUser:{userName: item.nickname, userId: -1, userImg: item.headimgurl} })
+              }
+            })
+            midArr.push({msg: '以上为历史消息', type: 1, msgUser: this.userInfo})
+            this.messageList = this.messageList.concat( midArr );
+          }
+          // console.log(midArr);
 
+        }).catch((err) => {
+          console.log(err);
+        });
+      },
       sideBarInit () { // 处理sidebar发来的请求
         this.showSideBar = false
       },
@@ -176,31 +208,32 @@
       sendConHandle() {
         // 发消息到聊天服务器
         if (this.msgInput.length > 0) {
-          this.httpServer.emit('message', {msg: this.msgInput, user: unicodeUserInfo});
           this.messageList.push({type: 3, msg: this.msgInput, msgUser: this.userInfo});
+
+          let params = qs.stringify( {'content': this.msgInput} )
+          console.log(params); // 发送消息到后台
+          axios.post(this.host.wallsedCon, params)
+          .then((res) => {
+            // console.log(res.data)
+            this.msgInput = '';
+            if (res.data.code === 1) {
+              // this.list.push({'nickname': res.data.nickname, 'content': this.msgInput, 'image': res.data.image})
+              // console.log(this.list)
+            }
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+
+          this.httpServer.emit('message', {msg: this.decToHex(this.msgInput), user: unicodeUserInfo});
+          
             // if (this.connectState) { // 在线
             //     this.httpServer.emit('message', {msg: this.msgInput, user: unicodeUserInfo});
             //     this.messageList.push({type: 3, msg: this.msgInput, msgUser: unicodeUserInfo});
             // } else {
             //     this.$refs.confirm.modelOpen();
             // }
-        }  
-
-        // console.log(this.msgInput); 发送消息到后台
-        axios.post(this.host.wallsedCon, {
-          content: this.msgInput
-        })
-        .then((res) => {
-          // console.log(res.data)
-          this.msgInput = '';
-          if (res.data.code === 1) {
-            // this.list.push({'nickname': res.data.nickname, 'content': this.msgInput, 'image': res.data.image})
-            // console.log(this.list)
-          }
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+        }
       },
       trim (s) {
           return s.replace(/(^\s*)|(\s*$)/g, '');

@@ -69,12 +69,12 @@
               this.msg= secRes.data.msg
               this.welcome = secRes.data.welcome || '恭喜您，请体验我们的后续活动！'
               _this.showLoading = false
-              setTimeout(function() {
-                _this.handleMessageBox('签到成功', '即将自动跳转到下一环节')
-              }, 1000)
-              setTimeout(function() {
-                 _this.$router.push({path: '/message'})
-              }, 2000)
+              // setTimeout(function() {
+              //   _this.handleMessageBox('签到成功', '即将自动跳转到下一环节')
+              // }, 1000)
+              // setTimeout(function() {
+              //    _this.$router.push({path: '/message'})
+              // }, 2000)
             }).catch((secErr) => {
               console.log('has code but check signInStatus error')
             })

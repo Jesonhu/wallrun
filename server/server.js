@@ -2,7 +2,7 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-let PORT = 3200;
+let PORT = 8200;
 
 //在线用户
 var onlineUserList = [];
@@ -15,7 +15,7 @@ io.on('connection', function (socket) {
     //监听新用户加入
     socket.on('login', function (obj) {
         // console.log('obj before', obj);
-        obj = sigleHexToDec(obj); // unicode转中文
+        obj = sigleHexToDec(obj.userName); // unicode转中文
         // console.log('obj after', obj);
 
         socket.socketId = obj.userId;
@@ -67,6 +67,7 @@ io.on('connection', function (socket) {
     socket.on('message', function (obj) {
         obj.onlineUserList = onlineUserList;
         obj.user.userName = hexToDec( obj.user.userName );
+        obj.msg = hexToDec( obj.msg );
         this.broadcast.emit('message', obj); // 广播给自己以外的所有用户
         console.log(obj.user.userName + '说：' + obj.msg);
     });
