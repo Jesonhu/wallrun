@@ -44,15 +44,15 @@
           {
             url: '/message',
             name: '消息上墙'
-          },
+          }
           // {
           //   url: '/lottery',
           //   name: '抽奖'
           // },
-          {
-            url: '/vote',
-            name: '投票'
-          }
+          // {
+          //   url: '/vote',
+          //   name: '投票'
+          // }
         ]
       }
     },
@@ -105,8 +105,10 @@
           height:62%;
           .list{
             height:100%;
+            display:flex;
             .item{
               width:100%;
+              flex:1;
               height:33%;
               float:left;
               display:flex;

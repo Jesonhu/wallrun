@@ -35,11 +35,11 @@
           //   link: '/lottery',
           //   name: '抽奖'
           // },
-          {
-            icon: 'icon-toupiao',
-            link: '/vote',
-            name: '投票'
-          },
+          // {
+          //   icon: 'icon-toupiao',
+          //   link: '/vote',
+          //   name: '投票'
+          // },
           {
             icon: 'icon-user',
             link: '/account',

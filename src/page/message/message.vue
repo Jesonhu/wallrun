@@ -178,23 +178,23 @@
       // 获取历史消息
       historyMsg() {
         let midArr = [{msg: '以下为历史消息', type: 1, msgUser: this.userInfo}];
-        axios.post(`${this.host.historyMsg}`, qs.stringify({page: 1}) )
-        .then((res) => {
+        axios.post(`${this.host.historyMsg}`, qs.stringify({page: 1}) ).then((res) => {
           
           let resList = res.data.list;
-          if (resList.length > 0) {
+          if (resList.length > 0) { // 返回有消息
             resList.forEach((item) => {
               if (item.nickname == this.userInfo.userName) { // 用户名相同
                 midArr.push({msg: item.content, type: 3, msgUser:{userName: item.nickname, userId: -1, userImg: item.headimgurl} })
               } else {
                 midArr.push({msg: item.content, type: 2, msgUser:{userName: item.nickname, userId: -1, userImg: item.headimgurl} })
               }
-            })
-            midArr.push({msg: '以上为历史消息', type: 1, msgUser: this.userInfo})
-            this.messageList = this.messageList.concat( midArr );
+            });
+          } else { // 返回无消息
+            midArr.push({msg: '暂无历史消息', type: 1, msgUser: this.userInfo})
           }
+          midArr.push({msg: '以上为历史消息', type: 1, msgUser: this.userInfo})
+          this.messageList = this.messageList.concat( midArr );
           // console.log(midArr);
-
         }).catch((err) => {
           console.log(err);
         });
