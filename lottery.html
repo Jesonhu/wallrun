@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>抽奖-微现场</title>
+    <link rel="stylesheet" href="./lib/zui/css/zui.min.css">
+    <link rel="stylesheet" href="./styles/reset.css">
+    <link rel="stylesheet" href="./styles/common.css">
+    <link rel="stylesheet" href="./lib/swiper/css/swiper.min.css">
+</head>
+<body>
+    <!-- loading -->
+    <div class="loading-wrap hide">
+        <div class="loading">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+            <div class="line4"></div>
+            <div class="line5"></div>
+        </div>
+    </div>
+
+    <!-- 主要内容 -->
+    <div class="wrapper full-bg lottery">
+        <div class="container stage">
+            <!-- header -->
+            <div class="row header clearfix">
+                <div class="title fl">
+                    <h1>荆门-恒大</h1>
+                </div>
+            </div>  
+        
+            <!-- 主要内容区 -->
+            <div class="row main clearfix">
+                <div class="viewport">
+                    <div class="main-con view no-padding">
+                        <!-- 左侧内容区域 -->
+                        <div class="con fl">
+                            <!-- 签到、抽奖header -->
+                            <div class="header2 clearfix">
+                                <div class="title fl">
+                                    <div class="left">现场抽奖</div>
+                                </div>
+                            </div>
+
+                            <!-- 左侧闪动内容区域 -->
+                            <div class="twinkle-box fl">
+                                <div class="twinkle-wrapper">
+                                    <div class="item hide">
+                                        <div class="avatar">
+                                            <img src="./images/avatar_default.png" alt="" width="150" hegiht="150">
+                                        </div>
+                                        <div class="shadow"></div>
+                                        <div class="name">......</div>
+                                    </div>
+                                    <div class="default">
+                                        <div class="emo">
+                                            <img src="./images/emo.png" alt="">
+                                        </div>
+                                        <div class="title">求中奖，快到碗里来</div>
+                                    </div>
+                                </div>    
+                            </div>
+                        </div>
+                        <!-- 右侧内容区域 -->
+                        <div class="controll-box fl">
+                            <!-- 奖品选项选择 -->
+                            <div class="select-wrapper">
+                                <!-- 选择显示内容框 -->
+                                <a href="javascript:;" class="select-btn">
+                                    <span>请选择奖品类别</span>
+                                    <i class="select-btn-arrow down"></i>
+                                </a>
+                                <!-- 选项框 -->
+                                <ul class="select-options hide">
+                                    <!-- <li class="options">iphone8</li> -->
+                                </ul>
+                            </div>
+                            <!-- 参与人数选择 -->
+                            <div class="select-wrapper">
+                                <div class="lottery-num clearfix">
+                                    <span class="lottery-num-btn minus fl">-</span>
+                                    <input type="number" class="lottery-num-inp" value="1">
+                                    <span class="lottery-num-btn add fr">+</span>
+                                </div>
+                            </div>
+                            <!-- 奖品图片缩略图 -->
+                            <div class="award-img-wrapper"></div>
+                            <!-- 开始/结束按钮 -->
+                            <div class="lottery-btn ready">开始抽奖</div>
+
+                            <div class="lottery-history hide">查看中奖记录</div>
+                        </div>
+                    </div>   
+                </div>
+                <!-- 磨砂效果 -->
+                <div class="blur blur-css3">
+                    <div class="full-bg"></div>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+
+    <!-- 消息框提示 -->
+    <div class="alert alert-warning-inverse alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <i class="icon-info-sign"></i>
+        <p>该奖品已有人中奖，请勿重复抽取</p>
+    </div>
+
+    <!-- <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script> -->
+    <script src="./js/jquery-1.12.1.min.js"></script>
+    <script src="./lib/swiper/js/swiper.jquery.min.js"></script>
+    <script src="./lib/zui/js/zui.min.js"></script>
+    <script src="./js/cookie.js"></script>
+    <script src="./js/common.js"></script>
+    <script src="./js/lottery.js"></script>
+</body>
+</html>

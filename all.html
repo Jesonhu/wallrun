@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+    <style>
+        body{
+            position: relative;
+        }
+        iframe{
+            position: absolute;
+            left: 0;
+            top:0;
+            bottom:0;
+            width:100%;
+            height:100%;
+        }
+        iframe.top{
+            z-index: 9999;
+        }
+        .test-list{
+            position:fixed;
+            top:0;
+            width:200px;
+            left: 50%;
+            margin-left:-100px;
+        }
+    </style>
+    <link rel="stylesheet" href="./lib/zui/css/zui.min.css">
+    <link rel="stylesheet" href="./styles/reset.css">
+    <link rel="stylesheet" href="./styles/common.css">
+    <link rel="stylesheet" href="./lib/swiper/css/swiper.min.css">
+</head>
+<body>
+    
+    <iframe src="./signin.html" id="frame1"></iframe>
+
+    <!-- footer -->
+    <div class="container c-out-footer">
+        <div class="footer-outer">
+            <div class="footer-wrapper row">
+
+                <div class="navbar fl">
+                    <ul class="list clearfix">
+                        <li class="item fl active" data-toggle="tooltip" title="签到">
+                            <a data-href="./signin.html" href="javascript:;">
+                                <i class="icon" style="background-image:url('./images/footer-qd.png')"></i>
+                                <div class="content">
+                                    <span>签到</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="item fl" data-toggle="tooltip" title="消息上墙">
+                            <a data-href="./message.html" href="javascript:;">
+                                <i class="icon" style="background-image:url('./images/footer-sq.png')"></i>
+                                <div class="content">
+                                    <span>上墙</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="item fl" data-toggle="tooltip" title="抽奖">
+                            <a data-href="./lottery.html" href="javascript:;">
+                                <i class="icon" style="background-image:url('./images/footer-cj.png')"></i>
+                                <div class="content">
+                                    <span>抽奖</span>
+                                </div>
+                            </a>    
+                        </li>
+                        <li class="item fl" data-toggle="tooltip" title="投票">
+                            <a data-href="./vote.html" href="javascript:;">
+                                <i class="icon" style="background-image:url('./images/footer-tj.png')"></i>
+                                <div class="content">
+                                    <span>投票</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="item fl fullScreen-bar fullScreenBar" data-toggle="tooltip" title="全屏">
+                            <i class="icon" style="background-image:url('./images/footer-qp.png')"></i>
+                            <div class="content">
+                                <span>全屏</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 右侧滚动控制 -->
+                <div class="navbar fr">
+                    <ul class="list clearfix">
+                        <li class="item fl active" data-toggle="tooltip" title="第一页">
+                            <a href="javascript:;">
+                                <em class="control first"></em>
+                                <div class="content">
+                                    <span>第一页</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="item fl" data-toggle="tooltip" title="上一页">
+                            <a href="javascript:;">
+                                <em class="control prev"></em>
+                                <div class="content">
+                                    <span>上一页</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="item fl" data-toggle="tooltip" title="开始/暂停">
+                            <a href="javascript:;">
+                                <em class="control play"></em>
+                                <div class="content">
+                                    <span>开始/暂停</span>
+                                </div>
+                            </a>    
+                        </li>
+                        <li class="item fl" data-toggle="tooltip" title="下一页">
+                            <a href="javascript:;">
+                                <em class="control next"></em>
+                                <div class="content">
+                                    <span>下一页</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="item fl" data-toggle="tooltip" title="最后一页">
+                            <em class="control last"></em>
+                            <div class="content">
+                                <span>最后一页</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>   
+    </div>
+
+
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="./lib/zui/js/zui.min.js"></script>
+    <script>
+        let iframeDoc;
+
+        $(function() {
+            $('.c-out-footer .navbar.fr').hide();
+            $('.c-out-footer .navbar.fl .item:visible').on('click', function() {
+                let frame1 = $('#frame1');
+                let href = $(this).find('a').attr('data-href');
+                let index = $(this).index();
+
+                if (index == 1) {
+                    // console.log('框架内', iframeDoc);
+                    iframeDoc = document.getElementById('frame1').contentWindow;
+
+                    $('.c-out-footer .navbar.fr').show();
+                } else {
+                    $('.c-out-footer .navbar.fr').hide();
+                }
+                $('#frame1').attr('src', href);
+            });
+        });
+
+        cOutFooter();
+        function cOutFooter() {
+            // 投票隐藏
+            $('.c-out-footer .navbar.fl .item').eq(3).hide();
+
+            // 底部鼠标划入 划出效果
+            $('.c-out-footer').on('mouseenter', function() {
+                $(this).addClass('active');
+            });
+            $('.c-out-footer').on('mouseleave', function() {
+                $(this).removeClass('active');
+            });
+            // 底部悬浮效果
+            $('.c-out-footer .list > .item').on('mouseenter', function() {
+                $(this).addClass('active')
+                .siblings().removeClass('active');
+            });
+            $('.c-out-footer .list > .item').on('mouseleave', function() {
+                $(this).removeClass('active');
+            });
+            // tooltip初始化
+            // $('[data-toggle="tooltip"]').tooltip('show'); 全显示
+            $('[data-toggle="tooltip"]').tooltip();
+            // 内容页最后一个样式问题处理
+            $('.c-out-footer .navbar.fr .item:last').on('mouseenter', function() {
+                $(document).find('.c-out-footer .navbar.fr .tooltip:last').css('left', '125px');
+            });
+        }
+
+        /**
+         * 全屏 
+         */
+        // 判断各种浏览器，找到正确的方法
+        function launchFullscreen(element) {
+            if(element.requestFullscreen) {
+            element.requestFullscreen();
+            } else if(element.mozRequestFullScreen) {
+            element.mozRequestFullScreen();
+            } else if(element.webkitRequestFullscreen) {
+            console.log('webkit方式全屏');   
+            element.webkitRequestFullscreen();
+            } else if(element.msRequestFullscreen) {
+            element.msRequestFullscreen();
+            }
+            console.log(element.requestFullscreen, element.mozRequestFullScreen, element.webkitRequestFullscreen, element.msRequestFullscreen);
+            console.log(document.exitFullscreen, document.mozCancelFullScreen, document.webkitExitFullscreen);
+        }
+        // 判断浏览器种类
+        function exitFullscreen() {
+            if(document.exitFullscreen) {
+            document.exitFullscreen();
+            } else if(document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+            } else if(document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+            }
+        }
+        let fullScreenSymbol = false;
+        $('.c-out-footer .fullScreenBar').on('click', function() {
+            if (!fullScreenSymbol) { // 全屏
+                launchFullscreen(document.documentElement);
+                console.log('点击', 1);
+            } else { // 退出全屏
+                exitFullscreen();
+                console.log('点击', 2);
+            }
+            fullScreenSymbol = !fullScreenSymbol;
+        });
+
+        // 消息控制按钮控制
+        clickControlBar();
+        function clickControlBar() {
+            $('.c-out-footer .navbar.fr .item').on('click', function() {
+                console.log( '框架内', iframeDoc );
+                let index = $(this).index();
+                switch (index) {
+                    case 0: // 点击了第一页
+                        console.log('click第一页', iframeDoc);
+                        if ( iframeDoc.timer) clearInterval( iframeDoc.timer);
+                        console.log( $( iframeDoc ).find('.message-con-wrap') );
+                        $( iframeDoc ).find('.message-con-wrap').scrollTop( 0 );
+                        if (iframeDoc.isAuto) {
+                            iframeDoc.currItemIndex = 0;
+                            iframeDoc.autoBottom();
+                        }
+                        break;
+                    case 1: // 点击了上一页
+                        console.log('click上一页');
+                        if (timer) clearInterval(timer);
+                        let messageConWrapHei1 = $('.message-con-wrap').height();
+                        let nowScrollTop1 = $('.message-con-wrap').scrollTop();
+                        let needScrollTop1 = nowScrollTop1 - messageConWrapHei1;
+                        $('.message-con-wrap').scrollTop( needScrollTop1 );
+                        if (isAuto) {
+                            currItemIndex = Math.floor( $('.message-con-wrap').scrollTop() / ($('.message-con-wrap').height() / 3 ) );
+                            autoBottom();
+                        }
+                        break;
+                    case 2: // 点击了开始/暂停
+                        console.log('开始，暂停', isAuto);
+                        if (!isAuto) {
+                            currItemIndex = Math.floor( $('.message-con-wrap').scrollTop() / ($('.message-con-wrap').height() / 3 ) );
+                            autoBottom();
+                            // console.log('开始');
+                            $(this).find('em').removeClass('pause').addClass('play');
+                        } else {
+                            clearInterval(timer);
+                            // console.log('暂停');
+                            $(this).find('em').removeClass('play').addClass('pause');
+                        }
+                        isAuto = !isAuto;
+                        break;
+                    case 3: // 点击了下一页
+                        console.log('click 下一页');
+                        if (timer) clearInterval(timer);
+                        let messageConWrapHei2 = $('.message-con-wrap').height();
+                        let nowScrollTop2 = $('.message-con-wrap').scrollTop();
+                        let needScrollTop2 = nowScrollTop2 + messageConWrapHei2;
+                        $('.message-con-wrap').scrollTop( needScrollTop2 );
+                        if (isAuto) {
+                            currItemIndex = Math.floor( $('.message-con-wrap').scrollTop() / ($('.message-con-wrap').height() / 3 ) );
+                            autoBottom();
+                        }
+                        break;
+                    case 4: // 点击了最后一页
+                        console.log('click 最后一页');
+                        if (timer) clearInterval(timer);
+                        // 滚动条一直显示在底部
+                        let listHeight = $('.message-con-wrap > .message-list').height();
+                        $('.message-con-wrap').scrollTop( listHeight );
+                        if (isAuto) {
+                            currItemIndex = Math.floor( $('.message-con-wrap').scrollTop() / ($('.message-con-wrap').height() / 3 ) );
+                            autoBottom();
+                        }
+                        break;            
+                }
+            })
+        }
+    </script>
+</body>
+</html>

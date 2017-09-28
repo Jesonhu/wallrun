@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>签到-微现场</title>
+    <link rel="stylesheet" href="./lib/zui/css/zui.min.css">
+    <link rel="stylesheet" href="./styles/reset.css">
+    <link rel="stylesheet" href="./styles/common.css">
+    <link rel="stylesheet" href="./lib/swiper/css/swiper.min.css">
+</head>
+<body>
+    
+    <!-- loading -->
+    <div class="loading-wrap hide">
+        <div class="loading">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+            <div class="line4"></div>
+            <div class="line5"></div>
+        </div>
+    </div>
+
+    <!-- 主要内容 -->
+    <div class="wrapper full-bg">
+        <div class="container stage">
+            <!-- header -->
+            <div class="row header clearfix">
+                <div class="title fl">
+                    <h1>荆门-恒大</h1>
+                </div>
+            </div>  
+        
+            <!-- 主要内容区 -->
+            <div class="row main clearfix">
+                <div class="viewport">
+                    <div class="main-con view">
+                        <div class="con">
+                            <!-- 签到、投票header -->
+                            <div class="header1 clearfix">
+                                <div class="title fl">
+                                    <div class="left">签到墙</div>
+                                    <div class="right">
+                                         共
+                                         <span class="num">0</span>
+                                         人签到
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 签到人数显示 -->
+                            <div class="signin-con">
+                                <ul class="list clearfix">
+                                    <!-- <li class="item show">
+                                        <div class="item-img" style="background-image:url('http://wx.qlogo.cn/mmopen/ic6yewS078vhxHaHI2hEsZFxuB6Lt1iacBORl7hmXRITy9qQWyib8zTa059PKXufg4kGlfuicF3yziaIHY47Cwkh3XXWZOXnX8522/0')"></div>
+                                        <div class="item-text">Jeson</div>
+                                    </li> -->
+                                </ul>  
+                            </div>
+                        </div>
+
+                        <!-- 右上角二维码 -->
+                        <div class="qrcode-wrap">
+                            <div class="qrcode-btn"></div>
+                            <div class="qrcode-mod-con c-alert hide">
+                                <div class="alert-wrapper sign">
+                                    <div style="background-image:url('http://xianchang.qq.com/common/getqrcodeimage?level=3&size=20&content=http%3A%2F%2Fxianchang.qq.com%2Flive%2Fclient%2Findex.html%23%2Fsignin%3Fcampaign_id%3D720244&name=signin')"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>   
+                </div>
+                <!-- 磨砂效果 -->
+                <div class="blur blur-css3">
+                    <div class="full-bg"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="./lib/swiper/js/swiper.jquery.min.js"></script>
+    <script src="./lib/zui/js/zui.min.js"></script>
+    <script src="./js/cookie.js"></script>
+    <script src="./js/common.js"></script>
+    <script src="./js/signin.js"></script>
+</body>
+</html>
