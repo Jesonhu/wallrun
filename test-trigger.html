@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <button class="wrap1">wrap1</button>
+    <button class="wrap2">wrap2</button>
+    <button class="wrap3">trigger</button>
+    <button class="fullScreen-bar test">fullScreen-bar</button>
+    <div class="show"></div>
+
+
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+        // Jquery trigger测试
+
+        // on绑定的可以触发
+        // $('.wrap1').on('click', function() {
+        //   let text = $(this).text();
+        //   $('.show').append( text );
+        // });
+        // $('.wrap2').on('click', function() {
+        //   let text = $(this).text();
+        //   $('.show').append( text );
+        // });
+
+        // click等jquery内置方法绑定的也可以触发
+        $('.wrap1').click(function() {
+        let text = $(this).text();
+        $('.show').append( '1'+text );
+        });
+        $('.wrap2').click(function() {
+        let text = $(this).text();
+        $('.show').append( '2'+text );
+        });
+
+        // 事件触发trigger
+        $('.wrap3').on('click', function() {
+            $('.wrap1').trigger('click');
+            $('.wrap2').trigger('click');
+        });
+
+        // 定时器触发trigger
+        // setInterval(function() {
+        //   $('.wrap1').trigger('click');
+        //   $('.wrap2').trigger('click');
+        // }, 3000);
+
+        $('.test').on('click', function() {
+            // let text = $(this).text();
+            $('.show').append( '3' );
+            alert('trigger 触发');
+            if (!false) { // 全屏
+                console.log('点击', 1);
+            } else { // 退出全屏
+                console.log('点击', 2);
+            }
+        });
+
+        if ( true ) { // 已经全屏
+            $('.test').trigger('click');
+            $('.wrap1').trigger('click');
+            $('.wrap2').trigger('click');
+            console.log('是否全屏', $(document));
+            // fullScreen();
+            // fullScreenSymbol = true;
+        }
+        // console.log('全屏', Cookie.getLocal('STORAGE_FULLSCREEN_KEY').isFullScreen );
+    </script>    
+</body>
+</html>

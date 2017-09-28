@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>投票展示-微现场</title>
+    <link rel="stylesheet" href="./lib/zui/css/zui.min.css">
+    <link rel="stylesheet" href="./styles/reset.css">
+    <link rel="stylesheet" href="./styles/common.css">
+    <link rel="stylesheet" href="./lib/swiper/css/swiper.min.css">
+</head>
+<body>
+    <!-- loading -->
+    <div class="loading-wrap">
+        <div class="loading">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+            <div class="line4"></div>
+            <div class="line5"></div>
+        </div>
+    </div>
+
+    <!-- 主要内容 -->
+    <div class="wrapper full-bg vote view-hide">
+        <div class="container stage">
+            <!-- header -->
+            <div class="row header clearfix">
+                <div class="title fl">
+                    <h1>荆门-恒大</h1>
+                </div>
+            </div>  
+        
+            <!-- 主要内容区 -->
+            <div class="row main clearfix">
+                <div class="viewport">
+                    <div class="main-con view">
+                        <div class="con">
+
+                            <!-- 投票统计 -->
+                            <div class="vote-con swiper-container">
+                                <!-- 投票主要内容显示 -->
+                                <ul class="list clearfix swiper-wrapper">
+                                    <!-- <li class="item swiper-slide">
+                                        <div class="header1 clearfix">
+                                            <div class="title fl">
+                                                <div class="left">先有鸡还是先有蛋</div>
+                                                <div class="right">
+                                                        共
+                                                        <span class="num">2</span>
+                                                        人参与
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="con-bd">
+                                            <div class="vote-scrollbar-move">
+                                                <div class="vote-column">
+                                                    <div class="vote-column-con">
+                                                        <div class="vote-column-count">2票(100%)</div>
+                                                        <div class="vote-column-bar" style="height: 387.75px;"></div>
+                                                    </div>
+                                                    <div class="vote-column-title">有鸡</div>
+                                                </div>
+                                                <div class="vote-column">
+                                                    <div class="vote-column-con">
+                                                        <div class="vote-column-count">0票(0%)</div>
+                                                        <div class="vote-column-bar" style="height:0"></div>
+                                                    </div>
+                                                    <div class="vote-column-title">有蛋</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="item swiper-slide">
+                                        <div class="header1 clearfix">
+                                            <div class="title fl">
+                                                <div class="left">先有鸡还是先有蛋2</div>
+                                                <div class="right">
+                                                        共
+                                                        <span class="num">2</span>
+                                                        人参与
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="con-bd">
+                                            <div class="vote-scrollbar-move">
+                                                <div class="vote-column">
+                                                    <div class="vote-column-con">
+                                                        <div class="vote-column-count">2票(100%)</div>
+                                                        <div class="vote-column-bar" style="height: 387.75px;"></div>
+                                                    </div>
+                                                    <div class="vote-column-title">有鸡</div>
+                                                </div>
+                                                <div class="vote-column">
+                                                    <div class="vote-column-con">
+                                                        <div class="vote-column-count">0票(0%)</div>
+                                                        <div class="vote-column-bar" style="height:0"></div>
+                                                    </div>
+                                                    <div class="vote-column-title">有蛋</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="item swiper-slide">
+                                        <div class="header1 clearfix">
+                                            <div class="title fl">
+                                                <div class="left">先有鸡还是先有蛋3</div>
+                                                <div class="right">
+                                                        共
+                                                        <span class="num">2</span>
+                                                        人参与
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="con-bd">
+                                            <div class="vote-scrollbar-move">
+                                                <div class="vote-column">
+                                                    <div class="vote-column-con">
+                                                        <div class="vote-column-count">2票(100%)</div>
+                                                        <div class="vote-column-bar" style="height: 387.75px;"></div>
+                                                    </div>
+                                                    <div class="vote-column-title">有鸡</div>
+                                                </div>
+                                                <div class="vote-column">
+                                                    <div class="vote-column-con">
+                                                        <div class="vote-column-count">0票(0%)</div>
+                                                        <div class="vote-column-bar" style="height:0"></div>
+                                                    </div>
+                                                    <div class="vote-column-title">有蛋</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li> -->
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- 投票详情两边切换 -->
+                        <div class="vote-arrow prev">
+                            <i class="icon-arrow"></i>
+                        </div>
+                        <div class="vote-arrow next">
+                            <i class="icon-arrow"></i>
+                        </div>
+
+                        <!-- 右上角二维码 -->
+                        <div class="qrcode-wrap">
+                            <div class="qrcode-btn"></div>
+                            <div class="qrcode-mod-con c-alert hide">
+                                <div class="alert-wrapper vote">
+                                    <div style="background-image:url('http://xianchang.qq.com/common/getqrcodeimage?level=3&size=20&content=http%3A%2F%2Fxianchang.qq.com%2Flive%2Fclient%2Findex.html%23%2Fsignin%3Fcampaign_id%3D720244&name=signin')"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>   
+                </div>
+                <!-- 磨砂效果 -->
+                <div class="blur blur-css3">
+                    <div class="full-bg"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- footer -->
+        <div class="container c-footer">
+            <div class="footer-outer">
+                <div class="footer-wrapper row">
+                    <div class="navbar fl">
+                        <ul class="list clearfix">
+                            <li class="item fl active" data-toggle="tooltip" title="签到">
+                                <a href="./signin.html">
+                                    <i class="icon" style="background-image:url('./images/footer-qd.png')"></i>
+                                    <div class="content">
+                                        <span>签到</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="item fl" data-toggle="tooltip" title="消息上墙">
+                                <a href="./message.html">
+                                    <i class="icon" style="background-image:url('./images/footer-sq.png')"></i>
+                                    <div class="content">
+                                        <span>上墙</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="item fl" data-toggle="tooltip" title="抽奖">
+                                <a href="./lottery.html">
+                                    <i class="icon" style="background-image:url('./images/footer-cj.png')"></i>
+                                    <div class="content">
+                                        <span>抽奖</span>
+                                    </div>
+                                </a>    
+                            </li>
+                            <li class="item fl" data-toggle="tooltip" title="投票">
+                                <a href="./vote.html">
+                                    <i class="icon" style="background-image:url('./images/footer-tj.png')"></i>
+                                    <div class="content">
+                                        <span>投票</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="item fl fullScreen-bar fullScreenBar" data-toggle="tooltip" title="全屏">
+                                <i class="icon" style="background-image:url('./images/footer-qp.png')"></i>
+                                <div class="content">
+                                    <span>全屏</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>   
+        </div>
+    </div>
+
+
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="./lib/swiper/js/swiper.jquery.min.js"></script>
+    <script src="./lib/zui/js/zui.min.js"></script>
+    <script src="./js/cookie.js"></script>
+    <script src="./js/common.js"></script>
+    <script src="./js/vote.js"></script>
+</body>
+</html>
